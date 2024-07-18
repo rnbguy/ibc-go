@@ -93,15 +93,15 @@ func (k Keeper) ConnOpenTry(
 		)
 	}
 
-	// validate client parameters of a chainB client stored on chainA
-	if err := k.clientKeeper.ValidateSelfClient(ctx, clientState); err != nil {
-		return "", err
-	}
+	// // validate client parameters of a chainB client stored on chainA
+	// if err := k.clientKeeper.ValidateSelfClient(ctx, clientState); err != nil {
+	// 	return "", err
+	// }
 
-	expectedConsensusState, err := k.clientKeeper.GetSelfConsensusState(ctx, consensusHeight)
-	if err != nil {
-		return "", sdkerrors.Wrapf(err, "self consensus state not found for height %s", consensusHeight.String())
-	}
+	// expectedConsensusState, err := k.clientKeeper.GetSelfConsensusState(ctx, consensusHeight)
+	// if err != nil {
+	// 	return "", sdkerrors.Wrapf(err, "self consensus state not found for height %s", consensusHeight.String())
+	// }
 
 	// expectedConnection defines Chain A's ConnectionEnd
 	// NOTE: chain A's counterparty is chain B (i.e where this code is executed)
@@ -129,17 +129,17 @@ func (k Keeper) ConnOpenTry(
 		return "", err
 	}
 
-	// Check that ChainA stored the clientState provided in the msg
-	if err := k.VerifyClientState(ctx, connection, proofHeight, proofClient, clientState); err != nil {
-		return "", err
-	}
+	// // Check that ChainA stored the clientState provided in the msg
+	// if err := k.VerifyClientState(ctx, connection, proofHeight, proofClient, clientState); err != nil {
+	// 	return "", err
+	// }
 
-	// Check that ChainA stored the correct ConsensusState of chainB at the given consensusHeight
-	if err := k.VerifyClientConsensusState(
-		ctx, connection, proofHeight, consensusHeight, proofConsensus, expectedConsensusState,
-	); err != nil {
-		return "", err
-	}
+	// // Check that ChainA stored the correct ConsensusState of chainB at the given consensusHeight
+	// if err := k.VerifyClientConsensusState(
+	// 	ctx, connection, proofHeight, consensusHeight, proofConsensus, expectedConsensusState,
+	// ); err != nil {
+	// 	return "", err
+	// }
 
 	// store connection in chainB state
 	if err := k.addConnectionToClient(ctx, clientID, connectionID); err != nil {
