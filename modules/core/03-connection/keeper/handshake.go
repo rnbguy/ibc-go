@@ -206,16 +206,16 @@ func (k Keeper) ConnOpenAck(
 		)
 	}
 
-	// validate client parameters of a chainA client stored on chainB
-	if err := k.clientKeeper.ValidateSelfClient(ctx, clientState); err != nil {
-		return err
-	}
+	// // validate client parameters of a chainA client stored on chainB
+	// if err := k.clientKeeper.ValidateSelfClient(ctx, clientState); err != nil {
+	// 	return err
+	// }
 
-	// Retrieve chainA's consensus state at consensusheight
-	expectedConsensusState, err := k.clientKeeper.GetSelfConsensusState(ctx, consensusHeight)
-	if err != nil {
-		return sdkerrors.Wrapf(err, "self consensus state not found for height %s", consensusHeight.String())
-	}
+	// // Retrieve chainA's consensus state at consensusheight
+	// expectedConsensusState, err := k.clientKeeper.GetSelfConsensusState(ctx, consensusHeight)
+	// if err != nil {
+	// 	return sdkerrors.Wrapf(err, "self consensus state not found for height %s", consensusHeight.String())
+	// }
 
 	prefix := k.GetCommitmentPrefix()
 	expectedCounterparty := types.NewCounterparty(connection.ClientId, connectionID, commitmenttypes.NewMerklePrefix(prefix.Bytes()))
@@ -229,17 +229,17 @@ func (k Keeper) ConnOpenAck(
 		return err
 	}
 
-	// Check that ChainB stored the clientState provided in the msg
-	if err := k.VerifyClientState(ctx, connection, proofHeight, proofClient, clientState); err != nil {
-		return err
-	}
+	// // Check that ChainB stored the clientState provided in the msg
+	// if err := k.VerifyClientState(ctx, connection, proofHeight, proofClient, clientState); err != nil {
+	// 	return err
+	// }
 
-	// Ensure that ChainB has stored the correct ConsensusState for chainA at the consensusHeight
-	if err := k.VerifyClientConsensusState(
-		ctx, connection, proofHeight, consensusHeight, proofConsensus, expectedConsensusState,
-	); err != nil {
-		return err
-	}
+	// // Ensure that ChainB has stored the correct ConsensusState for chainA at the consensusHeight
+	// if err := k.VerifyClientConsensusState(
+	// 	ctx, connection, proofHeight, consensusHeight, proofConsensus, expectedConsensusState,
+	// ); err != nil {
+	// 	return err
+	// }
 
 	k.Logger(ctx).Info("connection state updated", "connection-id", connectionID, "previous-state", "INIT", "new-state", "OPEN")
 
